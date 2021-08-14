@@ -8,9 +8,9 @@ import LoserMessage from './components/loserMessage';
 function App() {
 
   const [randomNumber, setRandomNumber] = useState(0);
-  const [jackpotMessage, setJackpotMessage] = useState(null)
+  const [isJackpot, setIsJackpot] = useState(null)
 
-  const getRandomizedNumber = (min, max) => {
+  const handlePlayButtonClick = (min, max) => {
     let i = 0;
 
     setInterval(() => {
@@ -28,19 +28,18 @@ function App() {
 
   const checkForWinner = (randomNumber) => {
     if (randomNumber >= 1 && randomNumber <= 1000) {
-      setJackpotMessage(true)
+      setIsJackpot(true)
     } else if (randomNumber > 1000) {
-      setJackpotMessage(false)
+      setIsJackpot(false)
     }
   };
 
   const onCloseDialog = () => {
-    setJackpotMessage(null);
+    setIsJackpot(null);
     setRandomNumber(0);
   };
 
-  // toggling the class for the play button
-  let buttonColor = randomNumber > 0 ? "clickedColor" : "defaultColor";
+  let buttonColorClass = randomNumber > 0 ? "clickedColor" : "defaultColor";
 
   return (
     <div className="App">
@@ -50,24 +49,22 @@ function App() {
       </h3>
       <button
         style={{ fontWeight: 600, padding: '35px 55px', cursor: 'pointer' }}
-        className={buttonColor}
-        onClick={() => { getRandomizedNumber(1, 100000) }}
+        className={buttonColorClass}
+        onClick={() => { handlePlayButtonClick(1, 100000) }}
       >
         Let's Play!
       </button>
       <YourLuckyNumber
         randomNumber={randomNumber}
       />
-      {jackpotMessage === true &&
+      {isJackpot === true &&
         <WinnerMessage
           onCloseDialog={onCloseDialog}
-          messsage={jackpotMessage}
         />
       }
-      {jackpotMessage === false &&
+      {isJackpot === false &&
         <LoserMessage
           onCloseDialog={onCloseDialog}
-          messsage={jackpotMessage}
         />
       }
       <p style={{ fontSize: '12px', fontWeight: '700', marginTop: '30px' }}>
